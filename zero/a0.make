@@ -29,7 +29,8 @@ ifeq ($(config),debug)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -std=c++0x
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -Ldebug
-  LIBS      += -framework GLUT -framework OpenGL -framework Cocoa -lvecmath
+  LIBS      += -lGL -lGLU -lglut -lvecmath
+#-framework GLUT -framework OpenGL -framework Cocoa -lvecmath
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += debug/libvecmath.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
@@ -51,7 +52,8 @@ ifeq ($(config),release)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -std=c++0x
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -s -Lrelease
-  LIBS      += -framework GLUT -framework OpenGL -framework Cocoa -lvecmath//-lGL -lGLU -lglut -lvecmath
+  LIBS      += -lGL -lGLU -lglut -lvecmath
+#-framework GLUT -framework OpenGL -framework Cocoa -lvecmath
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += release/libvecmath.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)

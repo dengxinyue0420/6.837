@@ -1,4 +1,5 @@
-#include "GLUT/glut.h"
+//#include "GLUT/glut.h"
+#include <GL/glut.h>
 #include <cmath>
 #include <iostream>
 #include <sstream>
