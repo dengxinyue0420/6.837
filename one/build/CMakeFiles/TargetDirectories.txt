@@ -1,0 +1,2 @@
+/media/linux/6.837/one/build/src/CMakeFiles/a1.dir
+/media/linux/6.837/one/build/vecmath/CMakeFiles/vecmath.dir

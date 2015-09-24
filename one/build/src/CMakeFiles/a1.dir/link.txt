@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/a1.dir/camera.cpp.o CMakeFiles/a1.dir/curve.cpp.o CMakeFiles/a1.dir/main.cpp.o CMakeFiles/a1.dir/parse.cpp.o CMakeFiles/a1.dir/surf.cpp.o  -o a1 -rdynamic ../vecmath/libvecmath.a -lGLU -lGL -lSM -lICE -lX11 -lXext -lglut -lXmu -lXi 
