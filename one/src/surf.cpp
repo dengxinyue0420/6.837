@@ -44,7 +44,7 @@ Surface makeSurfRev(const Curve &profile, unsigned steps)
       for (unsigned i=0;i<numPoints;i++){
 	CurvePoint cp  = c[i];
 	surface.VV.push_back(cp.V);
-	surface.VN.push_back(cp.N);
+	surface.VN.push_back(-cp.N);
 	Vector3f newV = M*cp.V;
 	Vector3f newN = M*cp.N;
 	newN.normalize();
@@ -54,11 +54,7 @@ Surface makeSurfRev(const Curve &profile, unsigned steps)
       c = newc;
       newc.clear();
     }
-    //cout<<numPoints<<endl;
-    //surface.VV[6].print();
-    //surface.VV[7].print();
-    //surface.VV[89*51+6].print();
-    //surface.VV[89*51+7].print();
+
     int another;
     for(unsigned s=0;s<steps;s++){
       if(s==steps-1){
@@ -71,13 +67,6 @@ Surface makeSurfRev(const Curve &profile, unsigned steps)
 	surface.VF.push_back(Tup3u(s*numPoints+i,another*numPoints+i+1,s*numPoints+i+1));
       }
     }
-    cout<<surface.VF[0]<<endl;
-    cout<<surface.VF[1]<<endl;
-    cout<<surface.VF[2]<<endl;
-    cout<<surface.VF[3]<<endl;
-    surface.VV[surface.VF[3][0]].print();
-    surface.VV[surface.VF[3][1]].print();
-    surface.VV[surface.VF[3][2]].print();
     return surface;
 }
 
