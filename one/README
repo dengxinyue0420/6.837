@@ -1,0 +1,15 @@
+1. To complile in Linux, in the build folder, run cmake.
+   Then run make install, and it should generate a exec file in one/inst/, called a1.
+   To run the file with swp, run one/inst/a1 swp/<swp file>.
+
+   My two swp files is under the swp/ folder. Named xinyue_1.swp and xinyue_2.swp
+
+2. Collabrote with no one.
+
+3. I got most of help from Piazza and office hour. TAs are really helpful. 
+
+4. I didn't find any problem with my code. However, one thing to be noticed, I didn't implement any extra credit, so my output for weirder.swp doesn't match the sample solution. I asked in Piazza, and TA said it is enough for the basic assignment.
+
+5. No, I didn't implement any.
+
+6. The transformation matrix was mentioned too early in the assignment. I am confused for that for a while. 

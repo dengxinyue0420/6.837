@@ -1,0 +1,9 @@
+circ profile 30  0.5
+
+bsp3 sweep 16 11
+[-1 3 0]
+[0 2 1]
+[1 1.5 0]
+[0 1 -1]
+
+gcyl fbf profile sweep

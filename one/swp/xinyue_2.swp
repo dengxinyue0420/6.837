@@ -1,0 +1,16 @@
+bez2 one 8 4
+[0 2]
+[-1 1]
+[-1 -1]
+[0 2]
+
+circ two 30 0.1
+
+bez2 three 8 4
+[0 1.5]
+[0 1]
+[0 -3]
+[0 -4]
+
+srev first 90 one
+gcyl second two three

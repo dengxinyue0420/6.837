@@ -65,13 +65,11 @@ Curve evalBezier( const vector< Vector3f >& P, unsigned steps )
     Vector3f V,B,N,T;
     float newx,newy,newz ;
     float derivx,derivy,derivz;
-
+    B = Vector3f(0,0,1);
     for(unsigned i =3;i<P.size();i=i+3){
       x = Vector4f(P[i-3][0],P[i-2][0],P[i-1][0],P[i][0]);
       y = Vector4f(P[i-3][1],P[i-2][1],P[i-1][1],P[i][1]);
       z = Vector4f(P[i-3][2],P[i-2][2],P[i-1][2],P[i][2]);
-      
-      B = Vector3f(0,0,1);
       T = P[i-2]-P[i-3];
       N = Vector3f::cross(B,T);
       
@@ -97,9 +95,15 @@ Curve evalBezier( const vector< Vector3f >& P, unsigned steps )
 	T = computeVector(bbderi,x,y,z);
 	N = Vector3f::cross(B,T);
 	B = Vector3f::cross(T,N);
-	T.normalize();
-	N.normalize();
-	B.normalize();
+        if(T!=Vector3f::ZERO){
+	  T.normalize();
+	}
+	if(N!=Vector3f::ZERO){
+	  N.normalize();
+	}
+	if(B!=Vector3f::ZERO){
+	  B.normalize();
+	}
 	struct CurvePoint current = {V,T,N,B};
 	c.push_back(current);
       }
@@ -132,16 +136,17 @@ Curve evalBspline( const vector< Vector3f >& P, unsigned steps )
     Vector3f V,B,N,T;
     float newx,newy,newz ;
     float derivx,derivy,derivz;
-
+    CurvePoint start;
     for(unsigned i =3;i<P.size();i=i+1){
       x = Vector4f(P[i-3][0],P[i-2][0],P[i-1][0],P[i][0]);
       y = Vector4f(P[i-3][1],P[i-2][1],P[i-1][1],P[i][1]);
       z = Vector4f(P[i-3][2],P[i-2][2],P[i-1][2],P[i][2]);
-      
-      B = Vector3f(0,0,1);
-      T = computeVector(BsplineBasis*monobasis(0),x,y,z);
-      if(Vector3f::cross(B,T)==Vector3f::ZERO){
-	B = Vector3f(0,1,0);
+      if(i==3){
+	B = Vector3f(0,0,1);
+	T = computeVector(BsplineBasis*monobasis(0),x,y,z);
+	if(Vector3f::cross(B,T)==Vector3f::ZERO){
+	  B = Vector3f(0,1,0);
+	}
       }
       for(unsigned s=0;s<=steps;s++){
 	bb = BsplineBasis*monobasis(s*deltaT);
@@ -150,17 +155,28 @@ Curve evalBspline( const vector< Vector3f >& P, unsigned steps )
 	T = computeVector(bbderi,x,y,z);
 	N = Vector3f::cross(B,T);
 	B = Vector3f::cross(T,N);
-	T.normalize();
-	N.normalize();
-	B.normalize();
-	
-	//V.print();
-	//N.print();
 	//B.print();
+	if(T!=Vector3f::ZERO){
+	  T.normalize();
+	}
+	if(N!=Vector3f::ZERO){
+	  N.normalize();
+	}
+	if(B!=Vector3f::ZERO){
+	  B.normalize();
+	}
+	
+        //N.print();
+	//B.print();
+ 
 	struct CurvePoint current = {V,T,N,B};
+	if(s==0&&i==3){
+	  start = current;
+	}
 	c.push_back(current);
       }
     }
+    //c.push_back(start);
     // Right now this will just return this empty curve.
     return c;
 }
