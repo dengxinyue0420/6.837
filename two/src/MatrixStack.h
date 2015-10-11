@@ -2,6 +2,7 @@
 #define MATRIX_STACK_H
 
 #include <vector>
+//#include "../vecmath/include/vecmath.h"
 #include <vecmath.h>
 
 class MatrixStack

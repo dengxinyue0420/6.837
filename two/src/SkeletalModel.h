@@ -8,6 +8,8 @@
 #include <vector>
 #include <sstream>
 #include <vecmath.h>
+#include <string>
+#include <math.h> 
 #include "extra.h"
 
 #include "tuple.h"
