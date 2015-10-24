@@ -1,0 +1,19 @@
+#include "TimeStepper.h"
+
+///TODO: implement Explicit Euler time integrator here
+void ForwardEuler::takeStep(ParticleSystem* particleSystem, float stepSize)
+{
+  vector<Vector3f> currentState = particleSystem->getState();
+  vector<Vector3f> deris = particleSystem->evalF(currentState);
+  vector<Vector3f> nextState;
+  for(int i=0;i<currentState.size();i++){
+    Vector3f nextState_i = currentState[i]+stepSize*deris[i];
+    nextState.push_back(nextState_i);
+  }
+  particleSystem->setState(nextState);
+}
+
+///TODO: implement Trapzoidal rule here
+void Trapzoidal::takeStep(ParticleSystem* particleSystem, float stepSize)
+{
+}
