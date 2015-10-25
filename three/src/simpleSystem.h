@@ -14,7 +14,9 @@ public:
 	SimpleSystem();
 	
 	vector<Vector3f> evalF(vector<Vector3f> state);
-	
+
+	void toggleRender(){};
+	void toggleMove(){};
 	void draw();
 	
 };

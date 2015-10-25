@@ -5,29 +5,39 @@ Build Instructions
 % cmake ..
 % make install
 
-The installed binary will be in inst/
+Compilen and Run
+==================
+% cd build
+% make clean install
+% cd ..
+% ./inst/a3 <parameters>
 
-The sample solution binaries are in sample_solution/
+How to use
+==================
+TimeStepper:
+1. e--ForwardEuler
+2. t--Trapezoidal
+3. r--RK4
 
-Platforms
-=========
-The build was tested on the Athena cluster and under Mac OS X. 
+To run a simpleSystem:
+% ./inst/a3 s e|t|r <stepsize>
 
-To run the sample binary under Windows, you will likely either need to 
-run it from that directory or set your PATH to include that directory 
-so that the runtime linker can find the freeglut DLL.
+To run a pendulumSystem
+% ./inst/a3 p <numTotalParticle> <IndexParticle> e|t|r <stepsize>
+//IndexParticle is the index of the particle that we want to see the springs connect to. 
+//The fixed point is origin
 
-The windows build for this assignment has not been tested. Unlike
-assignment 2, we don't use FLTK in this assignment, so, it should 
-be easier to get the build to work over there. You will need to make
-sure that both the freeglut and the RK4 libraries are linked in properly
-in order to make the build work. The RK4 library should be a 32-bit
-build, so, try that first.
+To run a clothSystem
+% ./inst/a3 c <GridSize> e|t|r <stepsize>
+//The cloth is a square. 
+//To toggle render of cloth, hit 'r'
+//To toggle movement, hit 's'
 
-Submission
-==========
-We only provide official support for developing under the Athena cluster.
-Your submission has to build and run over there to receive credit.
+//For step size, I used 0.01 when implementation
 
-Please submit your entire source directory (excluding the build
-directory) and compiled binary in inst/.
+
+-No Collaborator
+-No reference except Piazza
+-No problem with the code
+-No extra credit (Would you consider the movement as extra credit?)
+-The assignments are really interesting! I like it! Thanks!

@@ -3,7 +3,7 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
-
+#include <sstream>
 #include "extra.h"
 #include "camera.h"
 
@@ -19,31 +19,59 @@ using namespace std;
 namespace
 {
 
-    ParticleSystem *system;
-    TimeStepper * timeStepper;
+  ParticleSystem *system;
+  TimeStepper * timeStepper;
   float h;
+  int numParticle;
+  int indexParticle = -1;
+  char systemType;
   // initialize your particle systems
   ///TODO: read argv here. set timestepper , step size etc
   void initSystem(int argc, char * argv[])
   {
     // seed the random number generator with the current time
-    if(argc<3){
-      cout<<"Not enough argument"<<endl;
+    if(argc<4){
+      cout<<"Usage:a3 s e|t|r stepSize"<<endl;
+      cout<<"Usage:a3 p numParticle index e|t|r stepSize"<<endl;
+      cout<<"Usage:a3 c gridSize e|t|r stepSize"<<endl;
       exit(0);
     }
     srand( time( NULL ) );
+    int tsArg = 0;
     if(*argv[1]=='s'){
       system = new SimpleSystem();
+      systemType='s';
+      tsArg = 2;
     }else if(*argv[1]=='p'){
-      system = new PendulumSystem(2);
+      if(argc<6){
+	cout<<"Usage:a3 p numParticle index e|t|r stepSize"<<endl;
+	exit(0);
+      }
+      //parse the number of particles we want
+      numParticle = atoi(argv[2]);
+      //parse index of particle we want to see 
+      indexParticle = atoi(argv[3]);
+      system = new PendulumSystem(numParticle);
+      if(indexParticle>=numParticle){
+	cout<<"Index must be smaller than numParticle"<<endl;
+	exit(0);
+      }
+      tsArg = 4;
+      systemType='p';
+    }else if(*argv[1]=='c'){
+      numParticle = atoi(argv[2]);
+      system = new ClothSystem(numParticle);
+      tsArg = 3;
+      systemType='c';
     }else{
-      system = new ClothSystem();
+      cout<<"System needs to be s|p|c"<<endl;
+      exit(0);
     }
-    system->getState()[0].print();
-    h = (float)atof(argv[3]);
-    if(*argv[2]=='e'){
+    //system->getState()[0].print();
+    h = (float)atof(argv[tsArg+1]);
+    if(*argv[tsArg]=='e'){
       timeStepper = new ForwardEuler();
-    }else if(*argv[2]=='t'){
+    }else if(*argv[tsArg]=='t'){
       timeStepper = new Trapezoidal();
     }else{
       timeStepper = new RK4();		
@@ -60,6 +88,20 @@ namespace
     }
   }
 
+  //Draw line
+  void drawLine(int i, int j){
+    if(i<0||i>=system->m_numParticles||
+       j<0||j>=system->m_numParticles){
+      return;
+    }else{
+      Vector3f point1 = system->getState()[2*i];
+      Vector3f point2 = system->getState()[2*j];
+      glLineWidth(2.5);
+      glBegin(GL_LINES);
+      glVertex3f(point1[0], point1[1], point1[2]);glVertex3f(point2[0], point2[1], point2[2]);
+      glEnd();
+    }
+  }
   // Draw the current particle positions
   void drawSystem()
   {
@@ -73,7 +115,13 @@ namespace
     glutSolidSphere(0.1f,10.0f,10.0f);
     
     system->draw();
-    
+    //draw spring of the index we want 
+    if(indexParticle>0){
+      drawLine(indexParticle,indexParticle-1);
+      drawLine(indexParticle,indexParticle-2);
+      drawLine(indexParticle,indexParticle+1);
+      drawLine(indexParticle,indexParticle+2);
+    }
     
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, floorColor);
     glPushMatrix();
@@ -108,18 +156,31 @@ namespace
     // received.
     void keyboardFunc( unsigned char key, int x, int y )
     {
-        switch ( key )
-        {
+        switch ( key ){
         case 27: // Escape key
             exit(0);
             break;
         case ' ':
-        {
-            Matrix4f eye = Matrix4f::identity();
+	  {
+	    Matrix4f eye = Matrix4f::identity();
             camera.SetRotation( eye );
             camera.SetCenter( Vector3f::ZERO );
             break;
-        }
+	  }
+	case 'r':
+	  {
+	    if(systemType=='c'){
+	      system->toggleRender();
+	    }
+	    break;
+	  }
+	case 's':
+	  {
+	    if(systemType=='c'){
+	      system->toggleMove();
+	    }
+	    break;
+	  }
         default:
             cout << "Unhandled key press " << key << "." << endl;        
         }
@@ -325,7 +386,7 @@ int main( int argc, char* argv[] )
     glutDisplayFunc( drawScene );
 
     // Trigger timerFunc every 20 msec
-    glutTimerFunc(500, timerFunc, 500);
+    glutTimerFunc(20, timerFunc, 20);
 
         
     // Start the main loop.  glutMainLoop never returns.
