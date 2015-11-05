@@ -1,0 +1,36 @@
+#include "Renderer.h"
+
+#include "SceneParser.h"
+#include "Image.h"
+#include "Camera.h"
+
+Renderer::Renderer(const std::string &sceneFilename)
+{
+    // TODO: implement
+
+    // Parse the scene using SceneParser.
+}
+
+Renderer::~Renderer()
+{
+    // TODO: free up resources
+}
+
+void
+Renderer::Render(int width,
+                 int height,
+                 const std::string &outputFilename,
+                 float minDepth,
+                 float maxDepth,
+                 const std::string &depthFilename,
+                 const std::string &normalFilename)
+{
+    // TODO: implement
+
+    // Loop over each pixel in the image, shooting a ray
+    // through that pixel and finding its intersection with
+    // the scene. Write the color at the intersection to that
+    // pixel in your output image.
+    //
+    // Use the Image class to write out the requested output files.
+}

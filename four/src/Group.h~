@@ -1,0 +1,47 @@
+#ifndef GROUP_H
+#define GROUP_H
+
+#include "Object3D.h"
+#include "Ray.h"
+#include "Hit.h"
+
+#include <iostream>
+
+/// TODO: 
+/// Implement Group
+/// Add data structure to store a list of Object* 
+class Group : public Object3D
+{
+  public:
+    // Constructor
+    Group()
+    {
+    }
+
+    // Destructor
+    ~Group()
+    {
+    }
+
+    // Return true if intersection found
+    virtual bool intersect(const Ray &r, float tmin, Hit &h) const
+    {
+        // TODO: implement and fill hit
+        return false;  
+    }
+
+    // Add object to group
+    void addObject(Object3D *obj)
+    {
+    }
+
+    // Return number of objects in group
+    int getGroupSize()
+    {
+        return 0;
+    }
+
+  private:
+};
+
+#endif
