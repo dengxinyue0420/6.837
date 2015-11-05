@@ -1,0 +1,2 @@
+/Users/XinyueDeng/2015Fall/6.837/four/mac_build/src/CMakeFiles/a4.dir
+/Users/XinyueDeng/2015Fall/6.837/four/mac_build/vecmath/CMakeFiles/vecmath.dir

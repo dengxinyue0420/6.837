@@ -35,8 +35,12 @@ class Material
                    const Vector3f &dirToLight, 
                    const Vector3f &lightColor) 
     {
-        // TODO: implement
-        return Vector3f(1, 1, 1); 
+      float d = Vector3f::dot(dirToLight,hit.getNormal());
+      if(d>0){
+	return d*_diffuseColor*lightColor;
+      }else{
+	return Vector3f(0,0,0);
+      }
     }
 
     void loadTexture(const std::string &filename)

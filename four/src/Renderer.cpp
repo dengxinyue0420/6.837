@@ -2,6 +2,7 @@
 
 #include "Image.h"
 #include "Camera.h"
+#include "Light.h"
 #include "Ray.h"
 #include "Hit.h"
 
@@ -43,13 +44,31 @@ Renderer::Render(int width,
   Image outputF = Image(width,height);
   Image depthF = Image(width,height);
   Image normalF = Image(width,height);
+
+  Vector3f ambientLight = this->_sp.getAmbientLight();
+  int numLights = this->_sp.getNumLights();
+  
   for(int i=0;i<width;i++){
     for(int j=0;j<height;j++){
       Ray r = cam->generateRay(Vector2f(-1+i*x_step, -1+j*y_step));
       Hit h = Hit();
       if(group->intersect(r,cam->getTMin(),h)){
-	outputF.setPixel(i,j,0.2*Vector3f(1,1,1));
+	Material *m = h.getMaterial();
 	float t = h.getT();
+	Vector3f point = r.pointAtParameter(t);
+	Vector3f s = Vector3f::ZERO;
+	for(int ind=0;ind<numLights;ind++){
+	  Vector3f dirLight;
+	  Vector3f colorLight;
+	  float disToLight;
+	  Light *l =this->_sp.getLight(ind);
+	  l->getIllumination(point,dirLight,colorLight,disToLight);
+	  s+=m->shade(r,h,dirLight,colorLight);
+	}
+	s+=m->getDiffuseColor()*ambientLight;
+	
+	outputF.setPixel(i,j,s);
+	
 	//std::cout<<t<<std::endl;
 	if(t>=minDepth&&t<=maxDepth){
 	  float level = (maxDepth-t)/(maxDepth-minDepth);
@@ -58,11 +77,17 @@ Renderer::Render(int width,
 	}else{
 	  depthF.setPixel(i,j,Vector3f(1,1,1));
 	}
+	Vector3f n = h.getNormal();
+	normalF.setPixel(i,j,Vector3f((float)std::fabs(n.x()),(float)std::fabs(n.y()),(float)std::fabs(n.z())));
+	
       }
     }
   }
   outputF.savePNG(outputFilename);
   if(&depthFilename!=NULL){
     depthF.savePNG(depthFilename);
+  }
+  if(&normalFilename!=NULL){
+    normalF.savePNG(normalFilename);
   }
 }
